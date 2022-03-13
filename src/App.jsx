@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import debounce from './utils/debounce'
 import './App.scss'
 
 const keys = [
@@ -88,9 +89,9 @@ const App = () => {
     getData().then(setData)
   }, [])
 
-  const handleSearchField = (event) => {
+  const handleSearchField = debounce((event) => {
     setSearchText(event.target.value)
-  }
+  }, 500)
 
   const handleThClick = (key) => {
     // 1st click
@@ -126,7 +127,7 @@ const App = () => {
             className="App-searchField"
             placeholder="Search"
             disabled={!rows}
-            value={searchText}
+            defaultValue={searchText}
             onChange={handleSearchField}
           />
         </div>
