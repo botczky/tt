@@ -27,7 +27,6 @@ body {
 
 .App-container {
   min-height: 100vh;
-  padding-top: 20px;
   background: #fff;
 
   @media (min-width: 992px) {
@@ -36,6 +35,25 @@ body {
     border-radius: 20px;
     margin: 0 auto;
   }
+}
+
+.App-header {
+  padding: 20px 8px;
+
+  @media (min-width: 992px) {
+    padding: 20px 16px;
+  }
+}
+
+.App-searchField {
+  width: 200px;
+  height: 32px;
+  padding: 0 8px 0 16px;
+  background: #f8fafc;
+  border-radius: 14px;
+  border-width: 0;
+  color: inherit;
+  font: inherit;
 }
 
 .App-tableWrapper {

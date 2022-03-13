@@ -45,6 +45,7 @@ async function getData() {
 
 const App = () => {
   const [data, setData] = useState(null)
+  const [searchText, setSearchText] = useState('')
   const [sortingParams, setSortingParams] = useState({
     key: 'id',
     order: 'asc',
@@ -72,9 +73,24 @@ const App = () => {
     return result
   }, [data, sortingParams])
 
+  const rows = useMemo(() => {
+    return sortedData &&
+      sortedData.filter((item) => {
+        return Object.values(item).filter((value) => {
+          return typeof value === 'number'
+            ? value.toString() === searchText
+            : value.includes(searchText)
+        }).length
+      })
+  }, [sortedData, searchText])
+
   useEffect(() => {
     getData().then(setData)
   }, [])
+
+  const handleSearchField = (event) => {
+    setSearchText(event.target.value)
+  }
 
   const handleThClick = (key) => {
     // 1st click
@@ -105,36 +121,46 @@ const App = () => {
   return (
     <div className="App">
       <div className="App-container">
-        {/* App-header (search) */}
-        <div className="App-tableWrapper">
-          <table>
-            <thead>
-              <tr>
-                {keys.map((key) => (
-                  <th key={key} className={key}>
-                    <button onClick={() => handleThClick(key)}>
-                      <div className="inner">{key}</div>
-                    </button>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedData.map(({ id, ...item}) => (
-                <tr key={id}>
-                  <th scope='row'>
-                    <div className="inner">{id}</div>
-                  </th>
-                  {Object.keys(item).map((key) => (
-                    <td key={key} className={key}>
-                      <div className="inner">{item[key]}</div>
-                    </td>
+        <div className="App-header">
+          <input
+            className="App-searchField"
+            placeholder="Search"
+            disabled={!rows}
+            value={searchText}
+            onChange={handleSearchField}
+          />
+        </div>
+        {rows && (
+          <div className="App-tableWrapper">
+            <table>
+              <thead>
+                <tr>
+                  {keys.map((key) => (
+                    <th key={key} className={key}>
+                      <button onClick={() => handleThClick(key)}>
+                        <div className="inner">{key}</div>
+                      </button>
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {rows.map(({ id, ...item }) => (
+                  <tr key={id}>
+                    <th scope="row">
+                      <div className="inner">{id}</div>
+                    </th>
+                    {Object.keys(item).map((key) => (
+                      <td key={key} className={key}>
+                        <div className="inner">{item[key]}</div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         {/* App-footer (pagination) */}
       </div>
     </div>
