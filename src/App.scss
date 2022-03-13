@@ -1,0 +1,170 @@
+// https://vuesax.com
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  font-size: 0.8rem;
+  color: #2c3e50;
+
+  overflow-y: scroll; // ненавижу когда дергается страница при появлении скролла
+}
+
+.App {
+  background: #f8fafc;
+
+  @media (min-width: 992px) {
+    padding: 16px 0;
+  }
+}
+
+.App-container {
+  min-height: 100vh;
+  padding-top: 20px;
+  background: #fff;
+
+  @media (min-width: 992px) {
+    min-height: calc(100vh - 32px);
+    max-width: 960px;
+    border-radius: 20px;
+    margin: 0 auto;
+  }
+}
+
+.App-tableWrapper {
+  display: flex; // или grid, padding-x работает только так
+  padding: 0 8px;
+  overflow-x: scroll;
+
+  @media (min-width: 992px) {
+    padding: 0 16px;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 0; // default 1px
+
+  .inner {
+    display: inline-block;
+    padding: 0 16px;
+    margin: 8px 0;
+    // why:
+    // 1 dividers in thead
+    // 2 td.description где line-clamp 3. если padding то не скрывает 4 строку
+  }
+}
+
+th:not(:first-child) {
+  text-align: left;
+}
+
+thead th {
+  background: #f8fafc;
+
+  &:first-child {
+    border-radius: 14px 0 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 14px 0 0;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-width: 0;
+    background: transparent;
+    text-align: inherit;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  &:not(:first-child) .inner {
+    border-left: 1px solid #d1d5db;
+  }
+
+  &.id {
+    width: 60px;
+  }
+
+  &.firstName,
+  &.lastName,
+  &.phone,
+  &.email {
+    width: 200px;
+  }
+
+  &.street,
+  &.city,
+  &.state,
+  &.zip {
+    width: 120px;
+  }
+
+  &.description {
+    width: 280px;
+  }
+}
+
+tbody tr {
+  // th td
+  & > * {
+    &:first-child {
+      border-radius: 14px 0 0 14px;
+    }
+
+    &:last-child {
+      border-radius: 0 14px 14px 0;
+    }
+  }
+
+  &:first-child > * {
+    &:first-child {
+      border-radius: 0 0 0 14px;
+    }
+
+    &:last-child {
+      border-radius: 0 0 14px 0;
+    }
+  }
+
+  &:last-child > * {
+    &:first-child {
+      border-radius: 14px 0 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 14px 0 0;
+    }
+  }
+
+  &:hover > * {
+    background: #f8fafc;
+    transition: background-color 0.25s ease;
+  }
+}
+
+tbody td {
+  &.description .inner {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+}

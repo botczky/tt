@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import './App.css'
+import './App.scss'
 
 const keys = [
   'id',
@@ -104,30 +104,39 @@ const App = () => {
 
   return (
     <div className="App">
-      {!sortedData ? (
-        <div>Loading</div>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              {keys.map((key) => (
-                <th key={key}>
-                  <button onClick={() => handleThClick(key)}>{key}</button>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sortedData.map((item) => (
-              <tr key={item.id}>
-                {Object.keys(item).map((key) => (
-                  <td key={key}>{item[key]}</td>
+      <div className="App-container">
+        {/* App-header (search) */}
+        <div className="App-tableWrapper">
+          <table>
+            <thead>
+              <tr>
+                {keys.map((key) => (
+                  <th key={key} className={key}>
+                    <button onClick={() => handleThClick(key)}>
+                      <div className="inner">{key}</div>
+                    </button>
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {sortedData.map(({ id, ...item}) => (
+                <tr key={id}>
+                  <th scope='row'>
+                    <div className="inner">{id}</div>
+                  </th>
+                  {Object.keys(item).map((key) => (
+                    <td key={key} className={key}>
+                      <div className="inner">{item[key]}</div>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* App-footer (pagination) */}
+      </div>
     </div>
   )
 }
