@@ -33,7 +33,7 @@ const reducer = (state = initialState, action) => {
         status
       }
 
-    case 'SORT_ROWS':
+    case 'SET_SORTING':
       const { sortingKey, sortingDirection } = action.payload
 
       state.data.sort((item1, item2) => {
@@ -53,6 +53,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         sortingKey,
         sortingDirection,
+      }
+
+    case 'RESET_SORTING':
+
+      state.data.sort((item1, item2) => {
+        const value1 = item1['id']
+        const value2 = item2['id']
+
+        return value1 - value2
+      })
+
+      return {
+        ...state,
+        sortingKey: 'id',
+        sortingDirection: 'asc'
       }
 
     case 'SEARCH':

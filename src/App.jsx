@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchDataAction } from './store'
+import {
+  fetchDataAction,
+  searchAction,
+  setSortingAction,
+  resetSortingAction,
+} from './store'
 import debounce from './utils/debounce'
 import './App.scss'
 
@@ -21,41 +26,23 @@ const App = () => {
   }, [])
 
   const handleSearchFieldChange = debounce((event) => {
-    dispatch({ type: 'SEARCH', payload: { searchText: event.target.value } })
+    dispatch(searchAction(event.target.value))
   }, 500)
 
   const handleThClick = (key) => {
     // 1st click
     if (key !== sortingKey) {
-      dispatch({
-        type: 'SORT_ROWS',
-        payload: {
-          sortingKey: key,
-          sortingDirection: 'asc',
-        },
-      })
+      dispatch(setSortingAction(key, 'asc'))
     }
 
     // 2nd
     else if (sortingDirection === 'asc') {
-      dispatch({
-        type: 'SORT_ROWS',
-        payload: {
-          sortingKey: key,
-          sortingDirection: 'desc',
-        },
-      })
+      dispatch(setSortingAction(key, 'desc'))
     }
 
     // 3rd
     else {
-      dispatch({
-        type: 'SORT_ROWS',
-        payload: {
-          sortingKey: 'id',
-          sortingDirection: 'asc',
-        },
-      })
+      dispatch(resetSortingAction())
     }
   }
 
@@ -66,7 +53,7 @@ const App = () => {
           <input
             className="App-searchField"
             placeholder="Search"
-            disabled={status === 'success'}
+            disabled={status !== 'success'}
             defaultValue={searchText}
             onChange={handleSearchFieldChange}
           />

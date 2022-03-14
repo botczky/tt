@@ -5,4 +5,4 @@ import reducer from './reducer'
 const store = createStore(reducer, applyMiddleware(thunk))
 
 export default store
-export { fetchDataAction } from './actions'
+export * from './actions'
