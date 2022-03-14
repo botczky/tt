@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import debounce from './utils/debounce'
 import './App.scss'
 
@@ -45,76 +46,56 @@ async function getData() {
 }
 
 const App = () => {
-  const [data, setData] = useState(null)
-  const [searchText, setSearchText] = useState('')
-  const [sortingParams, setSortingParams] = useState({
-    key: 'id',
-    order: 'asc',
-  })
-
-  const sortedData = useMemo(() => {
-    if (!data) return data
-
-    const { key, order } = sortingParams
-
-    let result
-
-    if (key === 'id') {
-      result = data
-    } else {
-      result = [...data].sort((item1, item2) =>
-        item1[key].localeCompare(item2[key])
-      )
-    }
-
-    if (order === 'desc') {
-      result = [...result].reverse()
-    }
-
-    return result
-  }, [data, sortingParams])
-
-  const rows = useMemo(() => {
-    return sortedData &&
-      sortedData.filter((item) => {
-        return Object.values(item).filter((value) => {
-          return typeof value === 'number'
-            ? value.toString() === searchText
-            : value.includes(searchText)
-        }).length
-      })
-  }, [sortedData, searchText])
+  const dispatch = useDispatch()
+  // prettier-ignore
+  const {
+    rows,
+    searchText,
+    sortingKey,
+    sortingDirection
+  } = useSelector((state) => state)
 
   useEffect(() => {
-    getData().then(setData)
+    getData().then((data) => {
+      dispatch({ type: 'SET_DATA', payload: { data } })
+    })
   }, [])
 
-  const handleSearchField = debounce((event) => {
-    setSearchText(event.target.value)
+  const handleSearchFieldChange = debounce((event) => {
+    dispatch({ type: 'SEARCH', payload: { searchText: event.target.value } })
   }, 500)
 
   const handleThClick = (key) => {
     // 1st click
-    if (key !== sortingParams.key) {
-      setSortingParams({
-        key,
-        order: 'asc',
+    if (key !== sortingKey) {
+      dispatch({
+        type: 'SORT_ROWS',
+        payload: {
+          sortingKey: key,
+          sortingDirection: 'asc',
+        },
       })
     }
 
     // 2nd
-    else if (sortingParams.order === 'asc') {
-      setSortingParams({
-        key,
-        order: 'desc',
+    else if (sortingDirection === 'asc') {
+      dispatch({
+        type: 'SORT_ROWS',
+        payload: {
+          sortingKey: key,
+          sortingDirection: 'desc',
+        },
       })
     }
 
     // 3rd
     else {
-      setSortingParams({
-        key: 'id',
-        order: 'asc',
+      dispatch({
+        type: 'SORT_ROWS',
+        payload: {
+          sortingKey: 'id',
+          sortingDirection: 'asc',
+        },
       })
     }
   }
@@ -128,7 +109,7 @@ const App = () => {
             placeholder="Search"
             disabled={!rows}
             defaultValue={searchText}
-            onChange={handleSearchField}
+            onChange={handleSearchFieldChange}
           />
         </div>
         {rows && (
