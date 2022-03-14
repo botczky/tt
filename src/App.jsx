@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   fetchDataAction,
@@ -7,6 +7,8 @@ import {
   resetSortingAction,
 } from './store'
 import debounce from './utils/debounce'
+import Spinner from './components/Spinner'
+import { ReactComponent as AlertIcon } from './assets/circle-alert.svg'
 import './App.scss'
 
 const App = () => {
@@ -46,6 +48,10 @@ const App = () => {
     }
   }
 
+  const statusClickHandler = () => {
+    dispatch(fetchDataAction())
+  }
+
   return (
     <div className="App">
       <div className="App-container">
@@ -58,6 +64,29 @@ const App = () => {
             onChange={handleSearchFieldChange}
           />
         </div>
+        {status !== 'success' && (
+          <div className="App-status">
+            <button
+              className="App-status-inner"
+              disabled={status !== 'failure'}
+              onClick={statusClickHandler}>
+              {status === 'loading' && (
+                <>
+                  <Spinner />
+                  Loading...
+                </>
+              )}
+              {status === 'failure' && (
+                <>
+                  <AlertIcon className="App-status-alertIcon" />
+                  Failed to fetch
+                  <br />
+                  Click to try again
+                </>
+              )}
+            </button>
+          </div>
+        )}
         {rows && (
           <div className="App-tableWrapper">
             <table>
