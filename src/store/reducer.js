@@ -1,3 +1,4 @@
+import produce from 'immer'
 import { keys } from './constants'
 
 const initialState = {
@@ -10,85 +11,71 @@ const initialState = {
   sortingDirection: 'asc',
 }
 
-const reducer = (state = initialState, action) => {
-  // const rows = [...state.rows]
-  // почему я не могу обьявить const rows в каждом блоке case
-  // тоесть почему 'Cannot redeclare block-scoped variable 'rows'. ts(2451)'
-  // и почему не action.name ???
-  switch (action.type) {
-    case 'SET_DATA':
-      const { data } = action.payload
+const reducer = (state = initialState, action) =>
+  produce(state, (draft) => {
+    // prettier-ignore
+    const {
+      data,
+      status,
+      searchText,
+      sortingKey,
+      sortingDirection
+    } = action.payload || {}
 
-      return {
-        ...state,
-        data,
-        rows: data,
-      }
+    console.log(action.type, action.payload)
 
-    case 'SET_STATUS':
-      const { status } = action.payload
+    // почему не action.name ???
+    switch (action.type) {
+      case 'SET_DATA':
+        draft.data = data
+        draft.rows = data
+        break
+      case 'SET_STATUS':
+        draft.status = status
+        break
+      case 'SET_SORTING':
+        draft.data.sort((item1, item2) => {
+          const value1 = item1[sortingKey]
+          const value2 = item2[sortingKey]
 
-      return {
-        ...state,
-        status
-      }
+          return sortingKey === 'id'
+            ? value1 - value2
+            : value1.localeCompare(value2)
+        })
 
-    case 'SET_SORTING':
-      const { sortingKey, sortingDirection } = action.payload
+        if (sortingDirection === 'desc') {
+          draft.data.reverse()
+        }
 
-      state.data.sort((item1, item2) => {
-        const value1 = item1[sortingKey]
-        const value2 = item2[sortingKey]
+        draft.rows = draft.data
+        draft.sortingKey = sortingKey
+        draft.sortingDirection = sortingDirection
+        break
+      case 'RESET_SORTING':
+        draft.data.sort((item1, item2) => {
+          const value1 = item1['id']
+          const value2 = item2['id']
 
-        return sortingKey === 'id'
-          ? value1 - value2
-          : value1.localeCompare(value2)
-      })
+          return value1 - value2
+        })
 
-      if (sortingDirection === 'desc') {
-        state.data.reverse()
-      }
+        draft.rows = draft.data
+        draft.sortingKey = 'id'
+        draft.sortingDirection = 'asc'
+        break
+      case 'SEARCH':
+        draft.rows = draft.data.filter((item) => {
+          return Object.values(item).filter((value) => {
+            return typeof value === 'number'
+              ? value.toString() === searchText
+              : value.includes(searchText)
+          }).length
+        })
 
-      return {
-        ...state,
-        sortingKey,
-        sortingDirection,
-      }
-
-    case 'RESET_SORTING':
-
-      state.data.sort((item1, item2) => {
-        const value1 = item1['id']
-        const value2 = item2['id']
-
-        return value1 - value2
-      })
-
-      return {
-        ...state,
-        sortingKey: 'id',
-        sortingDirection: 'asc'
-      }
-
-    case 'SEARCH':
-      const { searchText } = action.payload
-
-      state.rows = state.data.filter((item) => {
-        return Object.values(item).filter((value) => {
-          return typeof value === 'number'
-            ? value.toString() === searchText
-            : value.includes(searchText)
-        }).length
-      })
-
-      return {
-        ...state,
-        searchText,
-      }
-
-    default:
-      return state
-  }
-}
+        break
+      default:
+        break
+    }
+  })
 
 export default reducer
