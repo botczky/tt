@@ -1,6 +1,10 @@
+import { keys } from './constants'
+
 const initialState = {
+  keys,
   data: null, // crud & sorting
   rows: null, // search & pagination
+  status: null,
   searchText: '',
   sortingKey: 'id',
   sortingDirection: 'asc',
@@ -19,6 +23,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         data,
         rows: data,
+      }
+
+    case 'SET_STATUS':
+      const { status } = action.payload
+
+      return {
+        ...state,
+        status
       }
 
     case 'SORT_ROWS':
