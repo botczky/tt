@@ -5,6 +5,7 @@ const initialState = {
   keys,
   data: null, // crud & sorting
   rows: null, // search & pagination
+  page: 1,
   status: null,
   searchText: '',
   sortingKey: 'id',
@@ -16,6 +17,7 @@ const reducer = (state = initialState, action) =>
     // prettier-ignore
     const {
       data,
+      page,
       status,
       searchText,
       sortingKey,
@@ -29,6 +31,7 @@ const reducer = (state = initialState, action) =>
       case 'SET_DATA':
         draft.data = data
         draft.rows = data
+        draft.page = 1
         break
       case 'SET_STATUS':
         draft.status = status
@@ -50,6 +53,7 @@ const reducer = (state = initialState, action) =>
         draft.rows = draft.data
         draft.sortingKey = sortingKey
         draft.sortingDirection = sortingDirection
+        draft.page = 1
         break
       case 'RESET_SORTING':
         draft.data.sort((item1, item2) => {
@@ -62,6 +66,7 @@ const reducer = (state = initialState, action) =>
         draft.rows = draft.data
         draft.sortingKey = 'id'
         draft.sortingDirection = 'asc'
+        draft.page = 1
         break
       case 'SEARCH':
         draft.rows = draft.data.filter((item) => {
@@ -72,6 +77,10 @@ const reducer = (state = initialState, action) =>
           }).length
         })
 
+        draft.page = 1
+        break
+      case 'SET_PAGE':
+        draft.page = page
         break
       default:
         break

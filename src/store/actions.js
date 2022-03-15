@@ -33,6 +33,13 @@ export const searchAction = (searchText) => ({
   }
 })
 
+export const setPageAction = (page) => ({
+  type: 'SET_PAGE',
+  payload: {
+    page
+  }
+})
+
 export const fetchDataAction = () => async (dispatch) => {
   try {
     dispatch(setStatusAction('loading'))

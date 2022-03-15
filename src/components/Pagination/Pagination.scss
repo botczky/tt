@@ -1,0 +1,32 @@
+.Pagination {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin: 0 2px;
+    display: grid;
+    place-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    border-width: 0;
+    background: var(--bg-color3);
+
+    &:disabled {
+      opacity: 0.4;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+    }
+  }
+
+  &-count {
+    margin-left: 10px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--bg-color1);
+  }
+}

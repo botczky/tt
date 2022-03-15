@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   fetchDataAction,
   searchAction,
   setSortingAction,
   resetSortingAction,
+  setPageAction,
 } from './store'
 import debounce from './utils/debounce'
 import Spinner from './components/Spinner'
 import { ReactComponent as AlertIcon } from './assets/circle-alert.svg'
+import Pagination from './components/Pagination'
 import './App.scss'
 
 const App = () => {
@@ -17,6 +19,7 @@ const App = () => {
   const {
     keys,
     rows,
+    page,
     status,
     searchText,
     sortingKey,
@@ -102,7 +105,7 @@ const App = () => {
                 </tr>
               </thead>
               <tbody>
-                {rows.map(({ id, ...item }) => (
+                {rows.slice((page - 1) * 50, page * 50).map(({ id, ...item }) => (
                   <tr key={id}>
                     <th scope="row">
                       <div className="inner">{id}</div>
@@ -118,7 +121,15 @@ const App = () => {
             </table>
           </div>
         )}
-        {/* App-footer (pagination) */}
+        {Math.ceil(rows?.length / 50) > 1 && (
+          <div className="App-footer">
+            <Pagination
+              value={page}
+              max={Math.ceil(rows?.length / 50)}
+              onChange={(value) => dispatch(setPageAction(value))}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
