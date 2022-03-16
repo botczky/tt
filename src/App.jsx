@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  fetchDataAction,
-  searchAction,
+  getDataAction,
   setSortingAction,
   resetSortingAction,
+  setSearchAction,
   setPageAction,
-} from './store'
+} from './store/superTable'
 import debounce from './utils/debounce'
 import Spinner from './components/Spinner'
 import { ReactComponent as AlertIcon } from './assets/circle-alert.svg'
@@ -17,21 +17,22 @@ const App = () => {
   const dispatch = useDispatch()
   // prettier-ignore
   const {
+    slicedData: rows,
     keys,
-    rows,
-    page,
     status,
-    searchText,
     sortingKey,
-    sortingDirection
-  } = useSelector((state) => state)
+    sortingDirection,
+    searchQuery,
+    page,
+    maxPage
+  } = useSelector((state) => state.superTable)
 
   useEffect(() => {
-    dispatch(fetchDataAction())
+    dispatch(getDataAction())
   }, [])
 
   const handleSearchFieldChange = debounce((event) => {
-    dispatch(searchAction(event.target.value))
+    dispatch(setSearchAction(event.target.value))
   }, 500)
 
   const handleThClick = (key) => {
@@ -52,7 +53,7 @@ const App = () => {
   }
 
   const statusClickHandler = () => {
-    dispatch(fetchDataAction())
+    dispatch(getDataAction())
   }
 
   return (
@@ -63,7 +64,7 @@ const App = () => {
             className="App-searchField"
             placeholder="Search"
             disabled={status !== 'success'}
-            defaultValue={searchText}
+            defaultValue={searchQuery}
             onChange={handleSearchFieldChange}
           />
         </div>
@@ -105,7 +106,7 @@ const App = () => {
                 </tr>
               </thead>
               <tbody>
-                {rows.slice((page - 1) * 50, page * 50).map(({ id, ...item }) => (
+                {rows.map(({ id, ...item }) => (
                   <tr key={id}>
                     <th scope="row">
                       <div className="inner">{id}</div>
@@ -121,11 +122,11 @@ const App = () => {
             </table>
           </div>
         )}
-        {Math.ceil(rows?.length / 50) > 1 && (
+        {maxPage > 1 && (
           <div className="App-footer">
             <Pagination
               value={page}
-              max={Math.ceil(rows?.length / 50)}
+              max={maxPage}
               onChange={(value) => dispatch(setPageAction(value))}
             />
           </div>

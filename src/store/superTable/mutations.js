@@ -24,15 +24,15 @@ export const sortDataMutation = (state) => {
   }
 }
 
-export const filterData = (state) => {
+export const filterDataMutation = (state) => {
   const { searchQuery } = state
 
   let filteredData
 
   if (searchQuery) {
-    filteredData = [...state.data]
+    filteredData = [...state.sortedData]
   } else {
-    filteredData = state.data.filter((item) => {
+    filteredData = state.sortedData.filter((item) => {
       return Object.values(item).filter((value) => {
         return typeof value === 'number'
           ? value.toString() === searchQuery
