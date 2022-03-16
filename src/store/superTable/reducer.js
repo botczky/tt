@@ -1,6 +1,6 @@
 import produce from 'immer'
 import { initialState } from './constants'
-import { sortDataMutation } from './mutations'
+import { sortDataMutation, filterDataMutation } from './mutations'
 
 const superTableReducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -27,6 +27,12 @@ const superTableReducer = (state = initialState, action) =>
         break
       case 'SORT_DATA':
         sortDataMutation(draft)
+        break
+      case 'SET_SEARCH':
+        draft.searchQuery = payload.searchQuery
+        break
+      case 'FILTER_DATA':
+        filterDataMutation(draft)
         break
       default:
         break

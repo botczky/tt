@@ -28,3 +28,14 @@ export const resetSortingAction = () => ({
 export const sortDataAction = () => ({
   type: 'SORT_DATA',
 })
+
+export const setSearchAction = (searchQuery) => ({
+  type: 'SET_SORTING',
+  payload: {
+    searchQuery
+  }
+})
+
+export const filterDataAction = () => ({
+  type: 'FILTER_DATA',
+})

@@ -1,5 +1,10 @@
 import { takeEvery, call, put, all } from 'redux-saga/effects'
-import { getDataFailureAction, getDataSuccessAction, sortDataAction } from './actions'
+import {
+  getDataFailureAction,
+  getDataSuccessAction,
+  sortDataAction,
+  filterDataAction,
+} from './actions'
 import { getData } from './service'
 
 function* handleGetDataAction() {
@@ -7,6 +12,7 @@ function* handleGetDataAction() {
     const data = yield call(getData)
     yield put(getDataSuccessAction(data))
     yield put(sortDataAction())
+    yield put(filterDataAction())
   } catch {
     yield put(getDataFailureAction())
   }
@@ -25,9 +31,14 @@ function* watchSortingActions() {
   yield takeEvery('RESET_SORTING', handleSortingActions)
 }
 
+function* handleSearchAction() {
+  yield put(filterDataAction())
+}
+
+function* watchSearchActions() {
+  yield takeEvery('SET_SEARCH', handleSearchAction)
+}
+
 export default function* superTableSaga() {
-  yield all([
-    watchGetDataAction(),
-    watchSortingActions()
-  ])
+  yield all([watchGetDataAction(), watchSortingActions(), watchSearchActions()])
 }
