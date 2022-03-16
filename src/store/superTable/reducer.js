@@ -30,14 +30,8 @@ const superTableReducer = (state = initialState, action) =>
         draft.sortingKey = initialState.sortingKey
         draft.sortingDirection = initialState.sortingDirection
         break
-      case 'SORT_DATA':
-        sortDataMutation(draft)
-        break
       case 'SET_SEARCH':
         draft.searchQuery = payload.searchQuery
-        break
-      case 'FILTER_DATA':
-        filterDataMutation(draft)
         break
       case 'SET_PAGE':
         draft.page = payload.page
@@ -45,12 +39,17 @@ const superTableReducer = (state = initialState, action) =>
       case 'RESET_PAGE':
         draft.page = initialState.page
         break
+      /* ===
+       * CALLED FROM SAGA EFFECTS
+       */
+      case 'SORT_DATA':
+        return sortDataMutation(state)
+      case 'FILTER_DATA':
+        return filterDataMutation(state)
       case 'CALC_MAX_PAGE':
-        calcMaxPageMutation(draft)
-        break
+        return calcMaxPageMutation(state)
       case 'SLICE_DATA':
-        sliceDataMutation(draft)
-        break
+        return sliceDataMutation(state)
       default:
         break
     }

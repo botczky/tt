@@ -1,13 +1,12 @@
 export const sortDataMutation = (state) => {
-  const {
-    sortingKey: key,
-    sortingDirection: direction
-  } = state
+  const { sortingKey: key, sortingDirection: direction } = state
+
+  let sortedData
 
   if (key === 'id') {
-    state.sortedData = state.data // т.к. изначально сортированны по id
+    sortedData = [...state.data] // т.к. изначально сортированны по id
   } else {
-    state.sortedData.sort((item1, item2) => {
+    sortedData = [...state.sortedData].sort((item1, item2) => {
       const value1 = item1[key]
       const value2 = item2[key]
 
@@ -16,19 +15,24 @@ export const sortDataMutation = (state) => {
   }
 
   if (direction === 'desc') {
-    state.sortedData.reverse()
+    sortedData = [...sortedData].reverse()
+  }
+
+  return {
+    ...state,
+    sortedData,
   }
 }
 
 export const filterData = (state) => {
-  const {
-    searchQuery
-  } = state
+  const { searchQuery } = state
+
+  let filteredData
 
   if (searchQuery) {
-    state.filteredData = state.sortedData
+    filteredData = [...state.data]
   } else {
-    state.filteredData = state.sortedData.filter((item) => {
+    filteredData = state.data.filter((item) => {
       return Object.values(item).filter((value) => {
         return typeof value === 'number'
           ? value.toString() === searchQuery
@@ -36,21 +40,25 @@ export const filterData = (state) => {
       }).length
     })
   }
+
+  return {
+    ...state,
+    filteredData,
+  }
 }
 
 export const sliceDataMutation = (state) => {
-  const {
-    page,
-    filteredData,
-  } = state
+  const { page } = state
 
-  state.slicedData = filteredData.slice((page - 1) * 50, page * 50)
+  return {
+    ...state,
+    slicedData: state.filteredData.slice((page - 1) * 50, page * 50),
+  }
 }
 
 export const calcMaxPageMutation = (state) => {
-  const {
-    filteredData
-  } = state
-
-  state.maxPage = Math.ceil(filteredData.length / 50)
+  return {
+    ...state,
+    maxPage: Math.ceil(state.filteredData.length / 50),
+  }
 }
