@@ -1,9 +1,12 @@
 import produce from 'immer'
-import { intialState } from './constants'
+import { initialState } from './constants'
+import { sortDataMutation } from './mutations'
 
-const superTableReducer = (state = intialState, action) =>
+const superTableReducer = (state = initialState, action) =>
   produce(state, (draft) => {
-    switch (action.type) {
+    const { type, payload } = action
+
+    switch (type) {
       case 'GET_DATA':
         draft.status = 'loading'
         break
@@ -11,8 +14,19 @@ const superTableReducer = (state = intialState, action) =>
         draft.status = 'failure'
         break
       case 'GET_DATA_SUCCESS':
-        draft.data = action.payload.data
+        draft.data = payload.data
         draft.status = 'success'
+        break
+      case 'SET_SORTING':
+        draft.sortingKey = payload.sortingKey
+        draft.sortingDirection = payload.sortingDirection
+        break
+      case 'RESET_SORTING':
+        draft.sortingKey = initialState.sortingKey
+        draft.sortingDirection = initialState.sortingDirection
+        break
+      case 'SORT_DATA':
+        sortDataMutation(draft)
         break
       default:
         break

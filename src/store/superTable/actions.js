@@ -12,3 +12,19 @@ export const getDataSuccessAction = (data) => ({
     data
   }
 })
+
+export const setSortingAction = (sortingKey, sortingDirection) => ({
+  type: 'SET_SORTING',
+  payload: {
+    sortingKey,
+    sortingDirection
+  }
+})
+
+export const resetSortingAction = () => ({
+  type: 'RESET_SORTING',
+})
+
+export const sortDataAction = () => ({
+  type: 'SORT_DATA',
+})

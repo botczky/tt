@@ -11,8 +11,13 @@ export const keys = [
   'description',
 ]
 
-export const intialState = {
+export const initialState = {
   keys,
+
   data: null,
+  sortedData: null,
+
   status: null,
+  sortingKey: 'id',
+  sortingDirection: 'asc',
 }
