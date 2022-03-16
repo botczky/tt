@@ -25,19 +25,11 @@ export const resetSortingAction = () => ({
   type: 'RESET_SORTING',
 })
 
-export const sortDataAction = () => ({
-  type: 'SORT_DATA',
-})
-
 export const setSearchAction = (searchQuery) => ({
-  type: 'SET_SORTING',
+  type: 'SET_SEARCH',
   payload: {
     searchQuery
   }
-})
-
-export const filterDataAction = () => ({
-  type: 'FILTER_DATA',
 })
 
 export const setPageAction = (page) => ({
@@ -51,10 +43,18 @@ export const resetPageAction = () => ({
   type: 'RESET_PAGE',
 })
 
-export const calcMaxPageAction = () => ({
-  type: 'CALC_MAX_PAGE',
+export const sortDataAction = () => ({
+  type: 'SORT_DATA',
+})
+
+export const filterDataAction = () => ({
+  type: 'FILTER_DATA',
 })
 
 export const sliceDataAction = () => ({
   type: 'SLICE_DATA',
+})
+
+export const calcMaxPageAction = () => ({
+  type: 'CALC_MAX_PAGE',
 })
