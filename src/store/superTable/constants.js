@@ -10,3 +10,9 @@ export const keys = [
   'zip',
   'description',
 ]
+
+export const intialState = {
+  keys,
+  data: null,
+  status: null,
+}

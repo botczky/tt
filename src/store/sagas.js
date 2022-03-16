@@ -1,3 +1,5 @@
+import { superTableSaga } from "./superTable";
+
 export default function* rootSaga() {
-  console.log('test saga')
+  yield superTableSaga
 }
