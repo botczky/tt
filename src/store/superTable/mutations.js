@@ -26,9 +26,9 @@ export const filterData = (state) => {
   } = state
 
   if (searchQuery) {
-    state.filterData = state.data
+    state.filteredData = state.sortedData
   } else {
-    state.filteredData = state.data.filter((item) => {
+    state.filteredData = state.sortedData.filter((item) => {
       return Object.values(item).filter((value) => {
         return typeof value === 'number'
           ? value.toString() === searchQuery
@@ -36,4 +36,21 @@ export const filterData = (state) => {
       }).length
     })
   }
+}
+
+export const sliceDataMutation = (state) => {
+  const {
+    page,
+    filteredData,
+  } = state
+
+  state.slicedData = filteredData.slice((page - 1) * 50, page * 50)
+}
+
+export const calcMaxPageMutation = (state) => {
+  const {
+    filteredData
+  } = state
+
+  state.maxPage = Math.ceil(filteredData.length / 50)
 }

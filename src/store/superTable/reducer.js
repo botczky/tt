@@ -1,6 +1,11 @@
 import produce from 'immer'
 import { initialState } from './constants'
-import { sortDataMutation, filterDataMutation } from './mutations'
+import {
+  sortDataMutation,
+  filterDataMutation,
+  calcMaxPageMutation,
+  sliceDataMutation,
+} from './mutations'
 
 const superTableReducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -33,6 +38,18 @@ const superTableReducer = (state = initialState, action) =>
         break
       case 'FILTER_DATA':
         filterDataMutation(draft)
+        break
+      case 'SET_PAGE':
+        draft.page = payload.page
+        break
+      case 'RESET_PAGE':
+        draft.page = initialState.page
+        break
+      case 'CALC_MAX_PAGE':
+        calcMaxPageMutation(draft)
+        break
+      case 'SLICE_DATA':
+        sliceDataMutation(draft)
         break
       default:
         break

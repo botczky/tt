@@ -39,3 +39,22 @@ export const setSearchAction = (searchQuery) => ({
 export const filterDataAction = () => ({
   type: 'FILTER_DATA',
 })
+
+export const setPageAction = (page) => ({
+  type: 'SET_PAGE',
+  payload: {
+    page
+  }
+})
+
+export const resetPageAction = () => ({
+  type: 'RESET_PAGE',
+})
+
+export const calcMaxPageAction = () => ({
+  type: 'CALC_MAX_PAGE',
+})
+
+export const sliceDataAction = () => ({
+  type: 'SLICE_DATA',
+})
