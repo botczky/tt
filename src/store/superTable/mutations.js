@@ -6,7 +6,7 @@ export const sortDataMutation = (state) => {
   if (key === 'id') {
     sortedData = [...state.data] // т.к. изначально сортированны по id
   } else {
-    sortedData = [...state.sortedData].sort((item1, item2) => {
+    sortedData = [...state.data].sort((item1, item2) => {
       const value1 = item1[key]
       const value2 = item2[key]
 
@@ -29,7 +29,7 @@ export const filterDataMutation = (state) => {
 
   let filteredData
 
-  if (searchQuery) {
+  if (!searchQuery) {
     filteredData = [...state.sortedData]
   } else {
     filteredData = state.sortedData.filter((item) => {
