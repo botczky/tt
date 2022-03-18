@@ -1,0 +1,29 @@
+.SuperTableStatus {
+  $headerHeight: 72px;
+
+  position: absolute;
+  top: $headerHeight;
+  display: grid;
+  place-content: center;
+  width: 100%;
+  height: calc(100% - $headerHeight);
+  padding-bottom: $headerHeight;
+
+  &-inner {
+    display: grid;
+    grid-auto-rows: 1fr;
+    place-items: center;
+    width: 120px;
+    height: 120px;
+    padding: 0;
+    border-width: 0;
+    background: transparent;
+  }
+
+  &-alertIcon {
+    width: 44px;
+    height: 44px;
+    stroke-width: 1.6px;
+    stroke: #ef4444;
+  }
+}
