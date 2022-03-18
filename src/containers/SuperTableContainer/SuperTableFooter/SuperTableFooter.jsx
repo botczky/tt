@@ -5,13 +5,14 @@ import './SuperTableFooter.scss'
 
 const SuperTableFooter = () => {
   const dispatch = useDispatch()
-  const { page, maxPage } = useSelector((state) => state.superTable)
+  const { status, page, maxPage } = useSelector((state) => state.superTable)
 
   return maxPage > 1 ? (
     <div className="SuperTableFooter">
       <Pagination
         value={page}
         max={maxPage}
+        disabled={status !== 'success'}
         onChange={(value) => dispatch(setPageAction(value))}
       />
     </div>

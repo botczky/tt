@@ -2,13 +2,13 @@ import { ReactComponent as ChevronRightIcon } from '../../assets/chevron-right.s
 import { ReactComponent as ChevronLeftIcon } from '../../assets/chevron-left.svg'
 import './Pagination.scss'
 
-const Pagination = ({ value, min = 1, max, onChange }) => {
+const Pagination = ({ value, min = 1, max, disabled, onChange }) => {
   return (
     <div className="Pagination">
-      <button disabled={value === min} onClick={() => onChange(value - 1)}>
+      <button disabled={disabled || value === min} onClick={() => onChange(value - 1)}>
         <ChevronLeftIcon />
       </button>
-      <button disabled={value === max} onClick={() => onChange(value + 1)}>
+      <button disabled={disabled || value === max} onClick={() => onChange(value + 1)}>
         <ChevronRightIcon />
       </button>
       <code className="Pagination-count">
