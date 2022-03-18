@@ -4,12 +4,11 @@ import {
   getDataAction,
   setSortingAction,
   resetSortingAction,
-  setPageAction,
 } from '../../store/superTable'
 import Spinner from '../../components/Spinner'
 import { ReactComponent as AlertIcon } from '../../assets/circle-alert.svg'
-import Pagination from '../../components/Pagination'
 import Header from './SuperTableHeader'
+import Footer from './SuperTableFooter'
 import './SuperTableContainer.scss'
 
 const SuperTableContainer = () => {
@@ -21,8 +20,6 @@ const SuperTableContainer = () => {
     status,
     sortingKey,
     sortingDirection,
-    page,
-    maxPage
   } = useSelector((state) => state.superTable)
 
   useEffect(() => {
@@ -107,15 +104,7 @@ const SuperTableContainer = () => {
           </table>
         </div>
       )}
-      {maxPage > 1 && (
-        <div className="SuperTableContainer-footer">
-          <Pagination
-            value={page}
-            max={maxPage}
-            onChange={(value) => dispatch(setPageAction(value))}
-          />
-        </div>
-      )}
+      <Footer />
     </div>
   )
 }
