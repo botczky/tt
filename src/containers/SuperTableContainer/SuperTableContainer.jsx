@@ -4,13 +4,12 @@ import {
   getDataAction,
   setSortingAction,
   resetSortingAction,
-  setSearchAction,
   setPageAction,
 } from '../../store/superTable'
-import debounce from '../../utils/debounce'
 import Spinner from '../../components/Spinner'
 import { ReactComponent as AlertIcon } from '../../assets/circle-alert.svg'
 import Pagination from '../../components/Pagination'
+import Header from './SuperTableHeader'
 import './SuperTableContainer.scss'
 
 const SuperTableContainer = () => {
@@ -22,7 +21,6 @@ const SuperTableContainer = () => {
     status,
     sortingKey,
     sortingDirection,
-    searchQuery,
     page,
     maxPage
   } = useSelector((state) => state.superTable)
@@ -30,10 +28,6 @@ const SuperTableContainer = () => {
   useEffect(() => {
     dispatch(getDataAction())
   }, [])
-
-  const handleSearchFieldChange = debounce((event) => {
-    dispatch(setSearchAction(event.target.value))
-  }, 500)
 
   const handleThClick = (key) => {
     // 1st click
@@ -58,15 +52,7 @@ const SuperTableContainer = () => {
 
   return (
     <div className="SuperTableContainer">
-      <div className="SuperTableContainer-header">
-        <input
-          className="SuperTableContainer-searchField"
-          placeholder="Search"
-          disabled={status !== 'success'}
-          defaultValue={searchQuery}
-          onChange={handleSearchFieldChange}
-        />
-      </div>
+      <Header />
       {status !== 'success' && (
         <div className="SuperTableContainer-status">
           <button
