@@ -1,10 +1,10 @@
-import { useState } from "react";
 import SuperTableContainer from './containers/SuperTableContainer'
 import ColorSchemeSwitcher from './components/ColorSchemeSwitcher'
+import { useColorScheme } from './services/color-scheme'
 import './App.scss'
 
 const App = () => {
-  const [colorScheme, setColorScheme] = useState('dark')
+  const [colorScheme, setColorScheme] = useColorScheme()
 
   return (
     <div className="App">
