@@ -1,6 +1,6 @@
 import SuperTableContainer from './containers/SuperTableContainer'
 import ColorSchemeSwitcher from './components/ColorSchemeSwitcher'
-import { useColorScheme } from './services/color-scheme'
+import useColorScheme from './hooks/useColorScheme'
 import './App.scss'
 
 const App = () => {
