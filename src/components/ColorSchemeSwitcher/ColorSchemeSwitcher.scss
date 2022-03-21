@@ -1,0 +1,51 @@
+.ColorSchemeSwitcher {
+  padding: 0;
+  border-width: 0;
+  background: transparent;
+  outline: 0;
+
+  &:focus-visible &-track {
+    outline: var(--primary-color) solid 2px;
+  }
+
+  &-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 60px;
+    height: 32px;
+    border-radius: 32px;
+    background: var(--bg-color3);
+  }
+
+  &-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    background: var(--bg-color2);
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 15%);
+    transition: transform 250ms ease, width 250ms ease;
+  }
+
+  &[aria-checked=true] &-thumb {
+    transform: translate(28px);
+  }
+
+  &:active &-thumb {
+    width: 28px;
+  }
+
+  &[aria-checked=true]:active &-thumb {
+    transform: translate(24px);
+  }
+
+  &-icon {
+    width: 16px;
+    height: 16px;
+    fill: #737373;
+  }
+}

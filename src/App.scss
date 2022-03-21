@@ -4,4 +4,14 @@
   @media (min-width: 992px) {
     padding: 16px 0;
   }
+
+  &-corner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    background: var(--bg-color2);
+    border-radius: 0 20px 0 0;
+    padding: 6px 6px 10px 20px;
+  }
 }

@@ -5,7 +5,7 @@
   --bg-color2: #fff;
   --bg-color3: #f8fafc;
 
-  @media (prefers-color-scheme: dark) {
+  &.dark {
     --text-color: #fff;
     --bg-color1: #18191c;
     --bg-color2: #1e2023;
