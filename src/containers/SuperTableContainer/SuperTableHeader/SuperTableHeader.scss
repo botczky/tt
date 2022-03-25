@@ -1,4 +1,5 @@
 .SuperTableHeader {
+  display: flex;
   padding: 20px 8px;
 
   @media (min-width: 992px) {
@@ -18,5 +19,74 @@
     &:focus {
       outline: var(--primary-color) solid 2px;
     }
+
+    &::placeholder {
+      opacity: 1;
+      color: #9ca3af;
+
+      :root.dark & {
+        color: #71717a;
+      }
+    }
+  }
+
+  &-iconWrapper {
+    position: relative;
+    padding: 8px;
+  }
+
+  &-helpIcon {
+    --fill-color: #a1a1aa;
+
+    :root.dark & {
+      --fill-color: #71717a;
+    }
+
+    width: 16px;
+    height: 16px;
+    fill: var(--fill-color);
+  }
+
+  &-tip {
+    position: absolute;
+    top: 24px;
+    left: -84px;
+    width: 200px;
+
+    &-arrow {
+      width: 16px;
+      height: 16px;
+      // border-radius: 2px;
+      background: var(--bg-color3);
+      transform: translate(92px, 8px) rotate(45deg);
+    }
+
+    &-content {
+      --text-color: #4b5563;
+      --box-shadow: #e5e7eb;
+
+      :root.dark & {
+        --text-color: #a1a1aa;
+        --box-shadow: #111827;
+      }
+
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: var(--bg-color3);
+      box-shadow: 0 2px 4px var(--box-shadow);
+    }
+  }
+
+  //* tip transition
+  &-tip {
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 100ms ease, z-index 0s linear 100ms;
+  }
+
+  &-iconWrapper:hover &-tip {
+    opacity: 1;
+    z-index: 1;
+    transition-delay: 0s, 0s;
   }
 }

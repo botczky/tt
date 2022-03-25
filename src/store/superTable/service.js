@@ -31,3 +31,57 @@ export async function getData() {
     return item
   })
 }
+
+export function search(data, query) {
+  if (query === '') return data
+
+  //* exact match by id
+  if (query.startsWith('#')) {
+    if (query === '#') return data
+
+    const foundItem = data.find((item) => {
+      return item.id.toString() === query.slice(1)
+    })
+
+    return foundItem ? [foundItem] : []
+  }
+
+  return data.filter((item) => {
+    //* case-insensitive by email
+    const isMatchesByEmail = item.email
+      .toLowerCase()
+      .includes(query.toLowerCase())
+
+    //* by phone in any format
+    const formatPhoneNumber = (value) => value.replace(/[()\s-]/g, '')
+    // prettier-ignore
+    const isMatchesByPhone =
+      formatPhoneNumber(item.phone).includes(formatPhoneNumber(query))
+
+    //* by full name
+    const [firstNameFromQuery, lastNameFromQuery] = query.split(' ')
+
+    // prettier-ignore
+    const isMatchesByFullName =
+      item.firstName.startsWith(query) ||
+      item.lastName.startsWith(query)  ||
+      item.firstName === firstNameFromQuery &&
+      item.lastName.startsWith(lastNameFromQuery)
+
+    //* by other
+    const otherKeys = Object.keys(item).filter((key) => {
+      return !['id', 'email', 'phone', 'firstName', 'lastName'].includes(key)
+    })
+
+    const isMatchesByOther = !!otherKeys.filter((key) => {
+      return item[key].includes(query)
+    }).length
+
+    return (
+      isMatchesByEmail ||
+      isMatchesByPhone ||
+      isMatchesByFullName ||
+      isMatchesByOther
+    )
+  })
+}

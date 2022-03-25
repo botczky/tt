@@ -1,3 +1,5 @@
+import { search } from './service'
+
 export const sortDataMutation = (state) => {
   const { sortingKey: key, sortingDirection: direction } = state
 
@@ -32,13 +34,7 @@ export const filterDataMutation = (state) => {
   if (!searchQuery) {
     filteredData = [...state.sortedData]
   } else {
-    filteredData = state.sortedData.filter((item) => {
-      return Object.values(item).filter((value) => {
-        return typeof value === 'number'
-          ? value.toString() === searchQuery
-          : value.includes(searchQuery)
-      }).length
-    })
+    filteredData = search(state.sortedData, searchQuery)
   }
 
   return {
